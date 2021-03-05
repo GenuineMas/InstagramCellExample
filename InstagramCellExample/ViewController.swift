@@ -7,6 +7,10 @@
 
 import UIKit
 
+
+
+
+
 class InstaCellViewController: UIViewController {
     
     
@@ -32,13 +36,15 @@ class InstaCellViewController: UIViewController {
         view.addSubview(theLabel)
         setupLabelLayouts()
         
+        if let localData = readLocalFile(forName: "InstagramTestData") {
+            parse(jsonData: localData)
+            
+        }
     }
 }
 
-// example Page View Controller
 class InstaPageViewController: UIPageViewController {
     
-    //creating custom PageController
     private var pageControl = UIPageControl(frame: .zero)
     
     private func setupPageControl() {
@@ -78,7 +84,7 @@ class InstaPageViewController: UIPageViewController {
         dataSource = self
         delegate = self
         
-        // instantiate "pages"
+        
         for viewIndex in 0..<colors.count {
             let viewController = InstaCellViewController()
             viewController.theLabel.text = "Photo: \(viewIndex)"
