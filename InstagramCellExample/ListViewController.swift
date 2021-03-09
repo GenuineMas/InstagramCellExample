@@ -12,6 +12,8 @@ import SnapKit
 class ListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     var pageViewControllers = [InstaPageViewController]()
+    let cellViewController = InstaCellViewController()
+    var photosURL = String()
     
     lazy var table: UITableView = {
         let v = UITableView()
@@ -20,26 +22,28 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
         return v
     }()
 
-    var items: [String] = []
-
     override func viewDidLoad() {
         super.viewDidLoad()
-        items.append(contentsOf: (1...2).map { index in "Item \(index)"})
+       
         setupUI()
+        
     }
 
     func setupUI() {
+        
         table.delegate = self
         table.dataSource = self
         table.register(CustomCell.self, forCellReuseIdentifier: CustomCell.cellId)
         self.view.addSubview(table)
+        
         table.snp.makeConstraints { (make) in
             make.edges.equalTo(self.view.safeAreaLayoutGuide)
         }
         for _ in 0 ..< 2 {
-                   let pageViewController = InstaPageViewController()
-                   pageViewControllers.append(pageViewController)
-               }
+            let pageViewController = InstaPageViewController()
+            pageViewControllers.append(pageViewController)
+      
+        }
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -48,21 +52,19 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: CustomCell.cellId, for: indexPath) as! CustomCell
-        cell.lblTitle.text = items[indexPath.row]
-        
         let pageViewController = pageViewControllers[indexPath.row]
         addChild(pageViewController)
         pageViewController.view.frame = (cell.contentView.bounds)
         pageViewController.didMove(toParent: self)
         cell.contentView.addSubview(pageViewController.view)
         
-        return cell
-    }
-    func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if let localData = readLocalFile(forName: "InstagramTestData") {
+            photosURL = (parse(jsonData: localData)?.posts[indexPath.row].postPhoto)!
+            cellViewController.theLabel.load(url: URL(string: photosURL)! )
+            print("THIS IS POST OBJECTS \(photosURL)")
+        }
         
-        let pageViewController = pageViewControllers[indexPath.row]
-        pageViewController.removeFromParent()
-        pageViewController.view.removeFromSuperview()
+        return cell
     }
 }
 

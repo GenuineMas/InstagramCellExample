@@ -9,16 +9,16 @@ import UIKit
 
 
 
-
-
 class InstaCellViewController: UIViewController {
     
     
-    let theLabel: UILabel = {
-        let label = UILabel()
+    
+    
+    let theLabel: UIImageView = {
+        let label = UIImageView()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.backgroundColor = .black
-        label.textAlignment = .center
+        //label.textAlignment = .center
         return label
     }()
     
@@ -36,14 +36,12 @@ class InstaCellViewController: UIViewController {
         view.addSubview(theLabel)
         setupLabelLayouts()
         
-        if let localData = readLocalFile(forName: "InstagramTestData") {
-            parse(jsonData: localData)
-            
-        }
     }
 }
 
 class InstaPageViewController: UIPageViewController {
+    
+  
     
     private var pageControl = UIPageControl(frame: .zero)
     
@@ -59,10 +57,6 @@ class InstaPageViewController: UIPageViewController {
     let colors: [UIColor] = [
         .white,
         .white,
-        .white,
-        .white,
-        .white,
-        .white
     ]
     
     var pages: [UIViewController] = [UIViewController]()
@@ -72,6 +66,7 @@ class InstaPageViewController: UIPageViewController {
     
     override init(transitionStyle style: UIPageViewController.TransitionStyle, navigationOrientation: UIPageViewController.NavigationOrientation, options: [UIPageViewController.OptionsKey : Any]? = nil) {
         super.init(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
+       
     }
     
     required init?(coder: NSCoder) {
@@ -80,6 +75,8 @@ class InstaPageViewController: UIPageViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+       // var photosURL = String()
+       
         
         dataSource = self
         delegate = self
@@ -87,15 +84,30 @@ class InstaPageViewController: UIPageViewController {
         
         for viewIndex in 0..<colors.count {
             let viewController = InstaCellViewController()
-            viewController.theLabel.text = "Photo: \(viewIndex)"
-            viewController.theLabel.textColor = .white
-            viewController.view.backgroundColor = colors[viewIndex]
+//            if let localData = readLocalFile(forName: "InstagramTestData") {
+//                photosURL = (parse(jsonData: localData)?.posts[viewIndex].postPhoto)!
+//                viewController.theLabel.load(url: URL(string: photosURL)! )
+//                print("THIS IS POST OBJECTS \(photosURL)")
+//            }
+            //viewController.theLabel.load(url: URL(string: photosURL )! )
+                //            viewController.theLabel.text = "Photo: \(viewIndex)"
+                //            viewController.theLabel.textColor = .white
+                viewController.view.backgroundColor = colors[viewIndex]
             pages.append(viewController)
         }
         setViewControllers([pages[0]], direction: .reverse, animated: false, completion: nil)
         
         view.addSubview(pageControl)
         view.bringSubviewToFront(pageControl)
+        
+        #warning("SnapKit doesn't work here ")
+        
+        //        pageControl.snp.makeConstraints{ make in
+        //            make.leading.equalToSuperview()
+        //            make.trailing.equalToSuperview()
+        //            make.bottom.equalToSuperview()
+        //        }
+        
         let leading = NSLayoutConstraint(item: pageControl, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading, multiplier: 1, constant: 0)
         let trailing = NSLayoutConstraint(item: pageControl, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing, multiplier: 1, constant: 0)
         let bottom = NSLayoutConstraint(item: pageControl, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .bottom, multiplier: 1, constant: 0)

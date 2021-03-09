@@ -9,11 +9,11 @@ import Foundation
 import UIKit
 
 
- func readLocalFile(forName name: String) -> Data? {
+func readLocalFile(forName name: String) -> Data? {
     do {
         if let bundlePath = Bundle.main.path(forResource: name,
                                              ofType: "json"),
-            let jsonData = try String(contentsOfFile: bundlePath).data(using: .utf8) {
+           let jsonData = try String(contentsOfFile: bundlePath).data(using: .utf8) {
             print(jsonData)
             return jsonData
         }
@@ -24,21 +24,24 @@ import UIKit
     return nil
 }
 
- func parse(jsonData: Data) {
-    do {
-        let decodedData = try JSONDecoder().decode(Posts.self,
-                                                   from: jsonData)
-        
-        print("UserPost1: ", decodedData)
-        print("UserPost2: ", decodedData)
+
+
+func parse(jsonData: Data) -> Posts?  {
     
+    do {
+        let decodedData = try JSONDecoder().decode(Posts.self,from: jsonData)
+        print(decodedData)
+        return decodedData
+        
     } catch {
         print("decode error")
+        return nil
     }
+    
 }
 
- func loadJson(fromURLString urlString: String,
-                      completion: @escaping (Result<Data, Error>) -> Void) {
+func loadJson(fromURLString urlString: String,
+              completion: @escaping (Result<Data, Error>) -> Void) {
     if let url = URL(string: urlString) {
         let urlSession = URLSession(configuration: .default).dataTask(with: url) { (data, response, error) in
             if let error = error {

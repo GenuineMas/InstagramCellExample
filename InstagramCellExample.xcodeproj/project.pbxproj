@@ -130,7 +130,6 @@
 		8CE964B425F145490058E645 /* InstagramCellExample */ = {
 			isa = PBXGroup;
 			children = (
-				8CCDFC8525F182BF009EE3BD /* Support */,
 				8CE964B525F145490058E645 /* AppDelegate.swift */,
 				8CCDFC9F25F25681009EE3BD /* DataManager.swift */,
 				8CCDFC9625F25316009EE3BD /* Posts.swift */,
@@ -140,6 +139,7 @@
 				8CE964BE25F1454B0058E645 /* Assets.xcassets */,
 				8CE964C025F1454B0058E645 /* LaunchScreen.storyboard */,
 				8CE964C325F1454B0058E645 /* Info.plist */,
+				8CCDFC8525F182BF009EE3BD /* Support */,
 			);
 			path = InstagramCellExample;
 			sourceTree = "<group>";
